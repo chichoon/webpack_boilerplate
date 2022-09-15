@@ -1,4 +1,8 @@
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const currentMode =
+  process.env.NODE_ENV === "production" ? "production" : "development";
 
 module.exports = {
   entry: { index: "./src/index.js" }, // 진입점 (1개)
@@ -9,20 +13,23 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        test: /\.(sc|c)ss$/,
+        use: ["style-loader", "css-loader", "sass-loader"], // SASS 로더
       },
       {
-        test: /\.sass$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
-      {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: ["babel-loader"],
       },
+      {
+        test: /\.(png|jpg|svg)$/,
+        use: ["file-loader"],
+      },
     ],
   },
-  plugins: {},
-  mode: "development",
+  plugins: [
+    new HtmlWebpackPlugin({ template: "./public/index.html" }),
+    new MiniCssExtractPlugin(),
+  ],
+  mode: currentMode,
 };
