@@ -9,6 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist"), // 번들링 파일 저장 폴더
     filename: "bundle.js", // 번들링 파일 이름
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -32,4 +33,12 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   mode: currentMode,
+  devServer: {
+    static: { directory: path.join(__dirname, "dist") },
+    compress: true,
+    port: 9000,
+    open: true,
+    compress: true,
+    host: "localhost",
+  },
 };
